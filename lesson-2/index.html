@@ -167,7 +167,7 @@
                         <input type="checkbox" v-model="isCognacTaken" />
                         Взяти конʼяк
                     </label>
-                    <label class="tariffs__label">
+                    <label v-if="isCognacTaken" class="tariffs__label">
                         Додати шоколад до конʼяку?
                         <input type="checkbox" v-model="isChokoladeTaken" />
                         {{chokoladeText}}
