@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Завдання №4</title>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </head>
+    <body>
+        <div class="app">
+            <div>Сума на рахунку: <span :style="sumStyle">{{grnSum}} грн.</span> </div>
+            <div>
+                Зарахувати на рахунок: <input type="number" v-model="addMoneyValue" /><button
+                    @click="addSum"
+                >
+                    Зарахувати
+                </button>
+            </div>
+            <div>
+                Зняти з рахунку: <input type="number" v-model="giveMoneyValue" /><button
+                    @click="giveSum"
+                >
+                    Зняти
+                </button>
+            </div>
+            <div>Відсотки за обслуговування: {{servicesPercent}} грн.</div>
+            <hr />
+            <div>Сумма у доларах: <span :style="dollarsValue > 100 ? 'color: green' : 'color: red'">${{dollarsValue}}</span></div>
+            <div>Сумма у євро: <span :style="euroValue > 100 ? 'color: green' : 'color: red'">Є {{euroValue}}</span></div>
+        </div>
+        <script>
+            const { createApp } = Vue;
+
+            createApp({
+                data() {
+                    return {
+                        grnSum: 0,
+                        dollarRate: 38,
+                        euroRate: 40,
+                        addMoneyValue: null,
+                        giveMoneyValue: null,
+                        servicesPercent: 0,
+                        sumStyle: 'color: inherit',
+                    };
+                },
+                methods: {
+                    addSum() {
+                        if (this.addMoneyValue > 0) {
+                            let result = +(this.grnSum + this.addMoneyValue - this.addMoneyValue * 0.03).toFixed(2);
+                            this.grnSum = result;
+                            this.setPercents(this.addMoneyValue * 0.03)
+                            this.clear();
+                            this.sumStyle = 'color: green;'
+                        }
+                    },
+                    giveSum() {
+                        let value = this.giveMoneyValue + this.giveMoneyValue * 0.03;
+                        if (value <= this.grnSum) {
+                            let result = +(this.grnSum - this.giveMoneyValue + this.giveMoneyValue * 0.03).toFixed(2);
+                            this.grnSum = result;
+                            this.setPercents(this.giveMoneyValue * 0.03)
+                            this.clear();
+                            this.sumStyle = 'color: red;'
+                        }
+                    },
+                    clear() {
+                        this.addMoneyValue = null;
+                        this.giveMoneyValue = null;
+                    },
+                    setPercents(value){
+                        this.servicesPercent += value
+                        this.servicesPercent = +this.servicesPercent.toFixed(2)
+                    }
+                },
+                computed: {
+                    dollarsValue() {
+                        return (this.grnSum / this.dollarRate).toFixed(2);
+                    },
+                    euroValue() {
+                        return (this.grnSum / this.euroRate).toFixed(2);
+                    },
+                },
+            }).mount(".app");
+        </script>
+    </body>
+</html>

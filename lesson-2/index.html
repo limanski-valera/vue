@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>1 Урок</title>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </head>
+    <body>
+        <style>
+            /* TASK 1 */
+            .ivan {
+                color: blue;
+            }
+            .default {
+                color: red;
+            }
+            /* TASK 2 */
+            .tariffs__wrapper {
+                max-width: 600px;
+            }
+            .wrapper--business {
+                background: url("https://i.insider.com/646da8c2a739dc0018091fe5?width=1000&format=jpeg&auto=webp")
+                    0 0 / cover no-repeat;
+            }
+            .wrapper--ekonom {
+                background: url("https://img.freepik.com/premium-photo/white-modern-luxury-business-jet-flies-air-clouds_527900-1596.jpg")
+                    0 0 / cover no-repeat;
+            }
+            .tariffs__body {
+                padding: 20px;
+                min-height: 400px;
+            }
+            .tariffs__label {
+                display: block;
+            }
+            .tariffs__radio {
+                display: flex;
+                flex-direction: column;
+            }
+            /* TASK 3 */
+            .article {
+                padding: 20px;
+                max-width: 300px;
+                border: 2px solid silver;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+            .article--correct {
+                border-color: green;
+            }
+            .article--error {
+                border-color: red;
+            }
+            .article__image {
+                height: 100px;
+            }
+            .article__label {
+                display: flex;
+                flex-direction: column;
+            }
+            /* TASK 5 */
+            .frameworks-list {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+            .framework-header {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            .framework__image {
+                width: 50px;
+            }
+            .framework-offer {
+                font-size: 20px;
+            }
+            /* TASK 6 */
+            .table {
+                display: flex;
+                flex-direction: column;
+                max-width: 900px;
+            }
+            .table__header {
+                border: 1px solid silver;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .table__title {
+                padding: 20px 10px;
+                margin: 0;
+            }
+            .table__title:not(:last-child) {
+                border-right: 1px solid silver;
+            }
+            .table__body {
+                border: 1px solid silver;
+                border-top: none;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .table__dishes {
+                margin: 0;
+                padding: 0;
+            }
+            .table__dishes:not(:last-child) {
+                border-right: 1px solid silver;
+            }
+            .table__dish {
+                margin: 0;
+                list-style: none;
+                padding: 0 10px;
+                display: flex;
+                justify-content: space-between;
+                height: 50px;
+                align-items: center;
+            }
+            .table__dish:not(:last-child) {
+                border-bottom: 1px solid silver;
+            }
+        </style>
+        <section id="task1">
+            <h2>1 Завдання</h2>
+            <div>
+                <label>Login <input type="text" v-model="login" /></label>
+            </div>
+            <div>
+                <label>Password <input type="text" /></label>
+            </div>
+            <div>
+                <button>Go</button>
+            </div>
+            <template v-if="login">
+                <img
+                    v-if="isLoginCorrect"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/800px-SNice.svg.png"
+                    height="200"
+                    alt=""
+                />
+                <p v-else :class="messageClass">{{errorMessage}}</p>
+            </template>
+        </section>
+        <hr />
+        <section id="task2">
+            <h2>2 Завдання</h2>
+            <div
+                class="tariffs__wrapper"
+                :class="{
+                [wrapperClass]: selectedTariff
+            }"
+            >
+                <select v-model="selectedTariff">
+                    <option value="" selected disabled>Оберіть квиток</option>
+                    <option value="business">Бізнес</option>
+                    <option value="ekonom">Економ</option>
+                </select>
+                <div v-if="isBusinessTariff" class="tariffs__body">
+                    <label class="tariffs__label">
+                        <input type="checkbox" v-model="isNewspaperTaken" />
+                        Взяти газету
+                    </label>
+                    <label class="tariffs__label">
+                        <input type="checkbox" v-model="isCognacTaken" />
+                        Взяти конʼяк
+                    </label>
+                    <label class="tariffs__label">
+                        Додати шоколад до конʼяку?
+                        <input type="checkbox" v-model="isChokoladeTaken" />
+                        {{chokoladeText}}
+                    </label>
+                </div>
+                <div v-if="isEkonomTariff" class="tariffs__body">
+                    <div class="tariffs__label">
+                        <h3>Оберіть пиво:</h3>
+                        <div class="tariffs__radio">
+                            <label>
+                                Лагер
+                                <input type="radio" value="lager" v-model="selectedBeer" />
+                            </label>
+                            <label>
+                                Стаут
+                                <input type="radio" value="stout" v-model="selectedBeer" />
+                            </label>
+                            <label>
+                                Бланш
+                                <input type="radio" value="blance" v-model="selectedBeer" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="tariffs__label">
+                        <h3>Оберіть чіпси:</h3>
+                        <div class="tariffs__radio">
+                            <label>
+                                Лагер
+                                <input type="radio" value="lays" v-model="selectedChips" />
+                            </label>
+                            <label>
+                                Стаут
+                                <input type="radio" value="lux" v-model="selectedChips" />
+                            </label>
+                            <label>
+                                Бланш
+                                <input type="radio" value="pringles" v-model="selectedChips" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <hr />
+        <seciton id="task3">
+            <h2>3 Завдання</h2>
+            <article
+                class="article"
+                :class="{
+                [cardClass]: isCorrect !== null
+            }"
+            >
+                <img
+                    src="https://cdn.pixabay.com/photo/2016/02/23/17/44/apple-1218166_1280.png"
+                    alt="яблуко"
+                    class="article__image"
+                />
+                <h2 class="article__title">Apple</h2>
+                <label class="article__label">
+                    Ваш переклад:
+                    <input type="text" class="article__input" v-model="entryWord" />
+                </label>
+                <button class="article__button" @click="buttonClick">Перевірити</button>
+                <template v-if="isCorrect !== null"> {{message}} </template>
+            </article>
+        </seciton>
+        <hr />
+        <section id="task4">
+            <h2>4 Завдання</h2>
+            <ul>
+                <li v-for="worker in workersList" :key="worker.id">
+                    {{worker.name}}: {{worker.salary}}
+                </li>
+            </ul>
+        </section>
+        <hr />
+        <seciton id="task5">
+            <h2>5 Завдання</h2>
+            <div class="frameworks-list">
+                <div v-for="framework in frameworksList" class="framework" :key="framework.id">
+                    <a :href="framework.link" class="framework-header">
+                        <img
+                            :src="framework.image"
+                            :alt="framework.title"
+                            class="framework__image"
+                        />
+                        <div class="framework-info">
+                            <div class="framework-name">{{framework.title}}</div>
+                            <div class="framework-link">{{framework.link}}</div>
+                        </div>
+                    </a>
+                    <div class="framework-body">
+                        <a :href="framework.link" class="framework-offer">{{framework.offer}}</a>
+                        <div class="framework-text">{{framework.text}}</div>
+                    </div>
+                </div>
+            </div>
+        </seciton>
+        <hr />
+        <section id="task6">
+            <h2>6 Завдання</h2>
+            <label>Нова замовлена страва: <input type="text" v-model="newDishName" /></label>
+            <button @click="addNewDish">Додати</button>
+            <div class="table">
+                <div class="table__header">
+                    <h3 class="table__title">Очікують на виконання</h3>
+                    <h3 class="table__title">Виконуються</h3>
+                    <h3 class="table__title">Готові до виносу</h3>
+                </div>
+                <div class="table__body">
+                    <ul class="table__dishes">
+                        <li v-for="dish in waitingList" class="table__dish" :key="dish.id">
+                            {{dish.name}}
+                            <button @click="() => startCooking(dish.id)">Готувати</button>
+                        </li>
+                    </ul>
+                    <ul class="table__dishes">
+                        <li v-for="dish in processingList" class="table__dish" :key="dish.id">
+                            {{dish.name}}
+                            <button @click="() => endCooking(dish.id)">Приготовлено</button>
+                        </li>
+                    </ul>
+                    <ul class="table__dishes">
+                        <li v-for="dish in completedList" class="table__dish" :key="dish.id">
+                            {{dish.name}}
+                            <button @click="() => giveOutDish(dish.id)">Подано</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            const { createApp } = Vue;
+
+            function initFirstTask() {
+                const users = [
+                    {
+                        login: "admin",
+                    },
+                ];
+
+                createApp({
+                    data() {
+                        return {
+                            login: null,
+                            errorMessage: "Please entry correct login",
+                        };
+                    },
+                    computed: {
+                        isLoginCorrect() {
+                            return users.find((user) => user.login === this.login.toLowerCase());
+                        },
+                        messageClass() {
+                            return this.login.toLowerCase() === "іван" ? "ivan" : "default";
+                        },
+                    },
+                }).mount("#task1");
+            }
+
+            function initSecondTask() {
+                createApp({
+                    data() {
+                        return {
+                            selectedTariff: "",
+                            isNewspaperTaken: false,
+                            isCognacTaken: false,
+                            isChokoladeTaken: false,
+                            selectedBeer: "lager",
+                            selectedChips: "lux",
+                        };
+                    },
+                    computed: {
+                        chokoladeText() {
+                            return this.isChokoladeTaken ? "ні" : "так";
+                        },
+                        isBusinessTariff() {
+                            return this.selectedTariff === "business";
+                        },
+                        isEkonomTariff() {
+                            return this.selectedTariff === "ekonom";
+                        },
+                        wrapperClass() {
+                            return this.isBusinessTariff ? "wrapper--business" : "wrapper--ekonom";
+                        },
+                    },
+                }).mount("#task2");
+            }
+
+            function initThirdTask() {
+                createApp({
+                    data() {
+                        return {
+                            entryWord: null,
+                            isCorrect: null,
+                        };
+                    },
+                    methods: {
+                        buttonClick() {
+                            if (this.entryWord.toLowerCase() === "яблуко") {
+                                this.isCorrect = true;
+                            } else this.isCorrect = false;
+                            clearInput();
+                        },
+                        clearInput() {
+                            this.entryWord = null;
+                        },
+                    },
+                    computed: {
+                        message() {
+                            return this.isCorrect
+                                ? "Добре. Молодець!"
+                                : "Невірно, спробуйте ще раз";
+                        },
+                        cardClass() {
+                            return this.isCorrect ? "article--correct" : "article--error";
+                        },
+                    },
+                }).mount("#task3");
+            }
+
+            function initFourthTask() {
+                createApp({
+                    data() {
+                        return {
+                            workersList: [
+                                {
+                                    id: "111",
+                                    name: "Іванов",
+                                    salary: 10000,
+                                },
+                                {
+                                    id: "112",
+                                    name: "Петров",
+                                    salary: 20000,
+                                },
+                                {
+                                    id: "113",
+                                    name: "Сидоров",
+                                    salary: 50000,
+                                },
+                            ],
+                        };
+                    },
+                }).mount("#task4");
+            }
+
+            function initFifthTask() {
+                createApp({
+                    data() {
+                        return {
+                            frameworksList: [
+                                {
+                                    id: 1,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png",
+                                    title: "Vue",
+                                    link: "https://ua.vueks.com",
+                                    offer: "Vue.js - Прогресивний JavaScript фреймворк | Vue.js",
+                                    text: "JavaScript фреймворк. Доступний, продуктивний і універсальний фреймворк для створення користувацьких веб інтерфейсів. Чому Vue Розпочати Швидкий старт.",
+                                },
+                                {
+                                    id: 2,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png",
+                                    title: "React",
+                                    link: "https://uk.legacy.reactjs.org/",
+                                    offer: "React – JavaScript-бібліотека для створення ...",
+                                    text: "React спрощує створення інтерактивних інтерфейсів. Вам потрібно лише описати, як різні частини інтерфейсу виглядають у кожному стані вашого додатку і React ...",
+                                },
+                                {
+                                    id: 3,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
+                                    title: "Angular",
+                                    link: "https://angular.io/",
+                                    offer: "Angular",
+                                    text: "Angular lets you start small and supports you as your team and apps grow.",
+                                },
+                                {
+                                    id: 4,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1200px-Node.js_logo.svg.png",
+                                    title: "Node.js",
+                                    link: "https://nodejs.org/uk",
+                                    offer: "Node.js",
+                                    text: "Node.js — платформа з відкритим кодом для виконання високопродуктивних мережевих застосунків, написаних мовою JavaScript. Засновником платформи є Раян Дал ...",
+                                },
+                            ],
+                        };
+                    },
+                }).mount("#task5");
+            }
+
+            function initSixthTask() {
+                createApp({
+                    data() {
+                        return {
+                            waitingList: [],
+                            processingList: [],
+                            completedList: [],
+                            newDishName: null,
+                            idCount: 0,
+                        };
+                    },
+                    methods: {
+                        addNewDish() {
+                            if (this.newDishName) {
+                                this.waitingList.push(this.createNewDish);
+                                this.increaseIdCounter();
+                                this.clearInput();
+                            }
+                        },
+                        clearInput() {
+                            this.newDishName = null;
+                        },
+                        increaseIdCounter() {
+                            this.idCount++;
+                        },
+                        startCooking(id) {
+                            let searchingDish;
+                            let serchingIndex = this.waitingList.findIndex(
+                                (elem) => (elem.id = id)
+                            );
+                            searchingDish = this.waitingList.splice(serchingIndex, 1);
+                            this.processingList = [...this.processingList, ...searchingDish];
+                        },
+                        endCooking(id) {
+                            let searchingDish;
+                            let serchingIndex = this.processingList.findIndex(
+                                (elem) => (elem.id = id)
+                            );
+                            searchingDish = this.processingList.splice(serchingIndex, 1);
+                            this.completedList = [...this.completedList, ...searchingDish];
+                        },
+                        giveOutDish(id) {
+                            let serchingIndex = this.completedList.findIndex(
+                                (elem) => (elem.id = id)
+                            );
+                            this.completedList.splice(serchingIndex, 1);
+                        },
+                    },
+                    computed: {
+                        createNewDish() {
+                            return {
+                                id: this.idCount,
+                                name: this.newDishName,
+                            };
+                        },
+                    },
+                }).mount("#task6");
+            }
+
+            initFirstTask();
+            initSecondTask();
+            initThirdTask();
+            initFourthTask();
+            initFifthTask();
+            initSixthTask();
+        </script>
+    </body>
+</html>

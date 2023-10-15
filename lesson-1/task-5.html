@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання №5</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div class="app">
+        <div><label>Login <input type="text" v-model="entryLogin"></label></div>
+        <div><label>Password <input type="password" v-model="entryPassword"></label></div>
+        <button @click="check">Go</button>
+    </div>
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data(){
+                return {
+                    entryLogin: null,
+                    entryPassword: null,
+                    users: [
+                        {
+                            name: 'Ivan',
+                            password: '1ivan2'
+                        },
+                        {
+                            name: 'Stepan',
+                            password: '1stepan2'
+                        },
+                        {
+                            name: 'Galya',
+                            password: '1galya2'
+                        },
+                        {
+                            name: 'Admin',
+                            password: 'admin'
+                        },
+                    ]
+                }
+            },
+            methods: {
+                check(){
+                    const name = this.entryLogin;
+                    const password = this.entryPassword
+                    const isCorrect = this.users.some(user => {
+                        return user.name === name && user.password === password
+                    })
+                    isCorrect ? alert('Ви можете увійти') : alert('Невірний логін чи пароль')
+                }
+            },
+            computed: {
+                
+            }
+        }).mount('.app')
+    </script>
+</body>
+</html>
