@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Третій урок</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <style>
+        #task8 {
+            max-width: 500px;
+        }
+        .filters {
+            padding: 5px;
+            border: 1px solid rgb(45, 45, 45);
+            margin-bottom: 10px;
+        }
+        .select {
+            margin-right: 20px;
+        }
+        .body {
+            padding: 5px;
+            border: 1px solid rgb(45, 45, 45);
+        }
+        .car {
+            margin-bottom: 5px;
+        }
+    </style>
+    <div id="task8">
+        <div class="filters">
+            <label class="select">
+                Марка
+                <select v-model="selectedBrand">
+                    <option selected value="">Будьʼякий бренд</option>
+                    <option v-for="(brand, index) in uniqueSortedBrands" :key="index">{{brand}}</option>
+                </select>
+            </label>
+            <label class="select">
+                Рік випуску
+                <select v-model="selectedYear">
+                    <option selected value="">Будьʼякий рік</option>
+                    <option v-for="(year, index) in uniqueSortedYears" :key="index">{{year}}</option>
+                </select>
+            </label>
+        </div>
+        <div class="body">
+            <div v-if="filteredCars" class="cars-list">
+                <div class="car" v-for="car in filteredCars" :key="car.id">
+                    {{car.brand}} - {{car.year}} р. - {{car.price}}$
+                </div>
+            </div>
+            <template v-else>
+                Нема підходящих авто
+            </template>
+        </div>
+    </div>
+    <script>
+        const {createApp} = Vue
+
+        function initEightTask(){
+            createApp({
+                data(){
+                    return {
+                        carsList: [
+                            {
+                                id: 1,
+                                brand: 'Mersedes',
+                                year: 2006,
+                                price: 10000,
+                            },
+                            {
+                                id: 2,
+                                brand: 'Mersedes',
+                                year: 2010,
+                                price: 12000,
+                            },
+                            {
+                                id: 3,
+                                brand: 'BMW',
+                                year: 2002,
+                                price: 6000,
+                            },
+                            {
+                                id: 4,
+                                brand: 'BMW',
+                                year: 2013,
+                                price: 17000,
+                            },
+                            {
+                                id: 5,
+                                brand: 'Audi',
+                                year: 2006,
+                                price: 9000,
+                            },
+                            {
+                                id: 6,
+                                brand: 'Audi',
+                                year: 2013,
+                                price: 18000,
+                            },
+                            {
+                                id: 7,
+                                brand: 'Audi',
+                                year: 2020,
+                                price: 50000,
+                            },
+                        ],
+
+                        selectedBrand: '',
+                        selectedYear: '',
+                    }
+                },
+                computed: {
+                    filteredCars(){
+                        let newCarsList;
+
+                        if(!this.selectedBrand && !this.selectedYear) newCarsList = this.carsList
+                        else if (this.selectedBrand && !this.selectedYear){
+                            newCarsList = this.carsList.filter(car => car.brand === this.selectedBrand)
+                        } else if (!this.selectedBrand && this.selectedYear){
+                            newCarsList = this.carsList.filter(car => `${car.year}` === this.selectedYear)
+                        } else {
+                            newCarsList = this.carsList.filter(car => car.brand === this.selectedBrand && `${car.year}` === this.selectedYear)
+                        }
+                        return newCarsList
+                    },
+                    uniqueSortedYears(){
+                        const yearsArray = [];
+                        for (const car of this.carsList) {
+                            yearsArray.push(car.year)
+                        }
+                        const newYearsArray = []
+                        for (const year of yearsArray) {
+                            !newYearsArray.find(elem => elem === year) ? newYearsArray.push(year) : 0;
+                        }
+                        newYearsArray.sort((a, b) => a > b)
+
+                        return newYearsArray
+                    },
+                    uniqueSortedBrands(){
+                        const brandsArray = [];
+                        for (const car of this.carsList) {
+                            brandsArray.push(car.brand)
+                        }
+                        const newBrandsArray = []
+                        for (const brand of brandsArray) {
+                            !newBrandsArray.find(elem => elem === brand) ? newBrandsArray.push(brand) : 0;
+                        }
+                        newBrandsArray.sort((a, b) => a > b)
+
+                        return newBrandsArray
+                    },
+                }
+            }).mount('#task8')
+        }
+        
+
+
+        initEightTask()
+    </script>
+</body>
+</html>
