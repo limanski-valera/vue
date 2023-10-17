@@ -45,7 +45,7 @@
             </label>
         </div>
         <div class="body">
-            <div v-if="filteredCars" class="cars-list">
+            <div v-if="filteredCars.length" class="cars-list">
                 <div class="car" v-for="car in filteredCars" :key="car.id">
                     {{car.brand}} - {{car.year}} р. - {{car.price}}$
                 </div>
