@@ -1,13 +1,10 @@
 <template>
-    <credit-card-form
-        v-model:number="creditCardData.number"
-        v-model:date="creditCardData.date"
-        v-model:cvv="creditCardData.cvv"
-    />
+    <credit-card-form v-model:card-number="cardData.number" />
+    {{ cardData.number }}
 </template>
 
 <script>
-import CreditCardForm from "@/components/CreditCardForm";
+import CreditCardForm from "./components/CreditCardForm";
 
 export default {
     name: "App",
@@ -16,7 +13,7 @@ export default {
     },
     data() {
         return {
-            creditCardData: {
+            cardData: {
                 number: null,
                 date: null,
                 cvv: null,

@@ -1,29 +1,30 @@
 <template>
     <div>
-        <label for="number">Card Number</label>
-        <input type="text" id="number" v-model="cardNumber" />
+        <label
+            >Card Number
+            <input type="text" v-model="cardNumberValue" maxlength="19"/>
+        </label>
     </div>
     <div>
-        <label>
-            Expiry Date
-            <input type="text" v-model="cardDate" />
+        <label
+            >Expiry Date
+            <input type="text" v-model="cardDateValue" maxlength="5" />
         </label>
-        <label>
-            Secure Code
-            <input type="number" v-model="cardCvv" />
+        <label
+            >Secure Code
+            <input type="number" v-model="cvvValue" />
         </label>
     </div>
-    {{ cardNumber }}
 </template>
 
 <script>
 export default {
     name: "CreditCardForm",
     props: {
-        number: {
+        cardNumber: {
             type: String,
         },
-        date: {
+        cardDate: {
             type: String,
         },
         cvv: {
@@ -31,33 +32,42 @@ export default {
         },
     },
     computed: {
-        cardNumber: {
-            get(){
-                return this.number.replace(/[\D]+/g, '')
+        cardNumberValue: {
+            get() {
+                let value = this.cardNumber;
+                if (value) {
+                    value = this.formattedNumber(value);
+                }
+                return value;
             },
-            set(val){
-                val = val.replace(/[\D]+/g, '')
-                this.$emit('update:number', val)
+            set(value) {
+                value = value.replace(/\D/g, "");
+                this.$emit("update:cardNumber", value);
+            },
+        },
+        cardDateValue: {
+            get(){
+                return this.cardDate
+            },
+            set(value){
+                this.$emit('update:cardDate', value)
             }
         },
-        cardDate: {
-            get() {
-                return this.date;
+        cvvValue: {
+            get(){
+                return this.cvv
             },
-            set(val) {
-                this.$emit("update:date", val);
-            },
+            set(value){
+                this.$emit('update:cvv', value)
+            }
         },
-        cardCvv: {
-            get() {
-                return this.cvv;
-            },
-            set(val) {
-                this.$emit("update:cvv", val);
-            },
+    },
+    methods: {
+        formattedNumber(string) {
+            return string.replace(/\B(?=(\d{4})+(?!\d))/g, " ");
         },
     },
 };
 </script>
 
-<style lang="css" scoped></style>
+<style lang="scss" scoped></style>
